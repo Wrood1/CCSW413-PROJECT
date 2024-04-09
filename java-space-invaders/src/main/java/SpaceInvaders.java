@@ -25,9 +25,9 @@ public class SpaceInvaders extends JFrame implements Commons {
 	+ "<br><br>Kill all the invading aliens before they can invade planet Earth."
 	+ "<br>And preferably, don't die during the battle!";
 	/*
-	 * Ajuda
+	 * HELP
 	 */
-	private static final String HELP_TOP_MESSAGE = "Ajuda";
+	private static final String HELP_TOP_MESSAGE = "HELP";
 	private static final String HELP_MESSAGE = "Controles: " 
 	+"<br><br>Movement to the Left: <br>Left Arrow key"
 	+ "<br><br>Movement to the Right: <br>Right Arrow key"
@@ -35,7 +35,7 @@ public class SpaceInvaders extends JFrame implements Commons {
 
 	JFrame frame = new JFrame("Space Invaders");
 	JFrame frame2 = new JFrame("Space Invaders");
-	JFrame frame3 = new JFrame("Ajuda");
+	JFrame frame3 = new JFrame("HELP");
 
 	/*
 	 * Constructor
@@ -48,7 +48,7 @@ public class SpaceInvaders extends JFrame implements Commons {
 		start.addActionListener(new ButtonListener());
 		start.setBounds(800, 800, 200, 100);
 
-		help = new JButton("Ajuda");
+		help = new JButton("HELP");
 		help.addActionListener(new HelpButton());
 
 		JLabel tekst = new JLabel(message, SwingConstants.CENTER);
@@ -111,7 +111,7 @@ public class SpaceInvaders extends JFrame implements Commons {
 
 	private class HelpButton implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			JButton close = new JButton("Fechar");
+			JButton close = new JButton("CLOSE");
 			close.addActionListener(new CloseHelp());
 
 			String topmessage = "<html><br>" + HELP_TOP_MESSAGE + "</html>";
