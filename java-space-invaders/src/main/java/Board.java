@@ -14,8 +14,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class Board extends JPanel implements Runnable, Commons {
-
     private static final long serialVersionUID = 1L;
+    private static Board instance;
 
     private Dimension d;
     private ArrayList<Alien> aliens;
@@ -38,7 +38,8 @@ public class Board extends JPanel implements Runnable, Commons {
 
     private Thread animator;
 
-    public Board() {
+    // Private constructor for Singleton pattern
+    private Board() {
         addKeyListener(new TAdapter());
         setFocusable(true);
         d = new Dimension(BOARD_WIDTH, BOARD_HEIGTH);
@@ -48,12 +49,14 @@ public class Board extends JPanel implements Runnable, Commons {
         setDoubleBuffered(true);
     }
 
-    public void addNotify() {
-        super.addNotify();
-        gameInit();
+    public static Board getInstance() {
+        if (instance == null) {
+            instance = new Board();
+        }
+        return instance;
     }
 
-    public void gameInit() {
+    private void gameInit() {
         aliens = new ArrayList<>();
 
         ImageIcon ii = new ImageIcon(this.getClass().getResource(alienpix));
@@ -304,6 +307,7 @@ public class Board extends JPanel implements Runnable, Commons {
             }
         }
     }
+
 
     public void run() {
         long beforeTime, timeDiff, sleep;
