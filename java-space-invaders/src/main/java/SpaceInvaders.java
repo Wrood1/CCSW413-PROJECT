@@ -19,20 +19,20 @@ public class SpaceInvaders extends JFrame implements Commons {
 	 * Inicio
 	 */
 	private static final String TOP_MESSAGE = "Space Invaders <br> Java Version";
-	private static final String INITIAL_MESSAGE = "Ajude-nos, capitão impressionante!!"
-			+ "<br>Os alienígenas estão tentando invadir nosso planeta."
-			+ "<br><br><br>Sua missão:"
-			+ "<br><br>Matar todos os alienígenas invasores antes que eles consigam invadir o planeta Terra."
-			+ "<br>E, de preferência, não morra durante a batalha!"
+	private static final String INITIAL_MESSAGE = "Ajude-nos, capitï¿½o impressionante!!"
+			+ "<br>Os alienï¿½genas estï¿½o tentando invadir nosso planeta."
+			+ "<br><br><br>Sua missï¿½o:"
+			+ "<br><br>Matar todos os alienï¿½genas invasores antes que eles consigam invadir o planeta Terra."
+			+ "<br>E, de preferï¿½ncia, nï¿½o morra durante a batalha!"
 			+ "<br><br><br>BOA SORTE!!!";
 	/*
 	 * Ajuda
 	 */
 	private static final String HELP_TOP_MESSAGE = "Ajuda";
 	private static final String HELP_MESSAGE = "Controles: " 
-							+ "<br><br>Movimento à Esquerda: <br>Seta Esquerda do teclado"
-							+ "<br><br>Movimento à Direita: <br>Seta Direita do teclado"
-							+ "<br><br>Atirar: <br>Barra de espaço";
+							+ "<br><br>Movimento ï¿½ Esquerda: <br>Seta Esquerda do teclado"
+							+ "<br><br>Movimento ï¿½ Direita: <br>Seta Direita do teclado"
+							+ "<br><br>Atirar: <br>Barra de espaï¿½o";
 
 	JFrame frame = new JFrame("Space Invaders");
 	JFrame frame2 = new JFrame("Space Invaders");
@@ -45,7 +45,7 @@ public class SpaceInvaders extends JFrame implements Commons {
 		String topmessage = "<html><br><br>" + TOP_MESSAGE + "</html>";
 		String message = "<html>" + INITIAL_MESSAGE + "</html>";
 
-		start = new JButton("Iniciar Missão");
+		start = new JButton("Iniciar Missï¿½o");
 		start.addActionListener(new ButtonListener());
 		start.setBounds(800, 800, 200, 100);
 
@@ -87,12 +87,6 @@ public class SpaceInvaders extends JFrame implements Commons {
 		frame3.dispose();
 	}
 
-	/*
-	 * Main
-	 */
-	public static void main(String[] args) {
-		new SpaceInvaders();
-	}
 
 	private class ButtonListener implements ActionListener {
 
@@ -100,7 +94,8 @@ public class SpaceInvaders extends JFrame implements Commons {
 
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setSize(BOARD_WIDTH, BOARD_HEIGTH);
-			frame.getContentPane().add(new Board());
+			 // Use the Singleton instance of Board
+			 frame.getContentPane().add(Board.getInstance());
 			frame.setResizable(false);
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
@@ -142,5 +137,11 @@ public class SpaceInvaders extends JFrame implements Commons {
 			frame3.setLocationRelativeTo(null);
 			frame3.setVisible(true);
 		}
+	}
+		/*
+	 * Main
+	 */
+	public static void main(String[] args) {
+		new SpaceInvaders();
 	}
 }
