@@ -19,20 +19,19 @@ public class SpaceInvaders extends JFrame implements Commons {
 	 * Inicio
 	 */
 	private static final String TOP_MESSAGE = "Space Invaders <br> Java Version";
-	private static final String INITIAL_MESSAGE = "Ajude-nos, capit�o impressionante!!"
-			+ "<br>Os alien�genas est�o tentando invadir nosso planeta."
-			+ "<br><br><br>Sua miss�o:"
-			+ "<br><br>Matar todos os alien�genas invasores antes que eles consigam invadir o planeta Terra."
-			+ "<br>E, de prefer�ncia, n�o morra durante a batalha!"
-			+ "<br><br><br>BOA SORTE!!!";
+	private static final String INITIAL_MESSAGE ="Help us, amazing captain!!"
+	+ "<br>The aliens are trying to invade our planet."
+	+ "<br><br><br>Your mission:"
+	+ "<br><br>Kill all the invading aliens before they can invade planet Earth."
+	+ "<br>And preferably, don't die during the battle!";
 	/*
 	 * Ajuda
 	 */
 	private static final String HELP_TOP_MESSAGE = "Ajuda";
 	private static final String HELP_MESSAGE = "Controles: " 
-							+ "<br><br>Movimento � Esquerda: <br>Seta Esquerda do teclado"
-							+ "<br><br>Movimento � Direita: <br>Seta Direita do teclado"
-							+ "<br><br>Atirar: <br>Barra de espa�o";
+	+"<br><br>Movement to the Left: <br>Left Arrow key"
+	+ "<br><br>Movement to the Right: <br>Right Arrow key"
+	+ "<br><br>Shoot: <br>Space bar";
 
 	JFrame frame = new JFrame("Space Invaders");
 	JFrame frame2 = new JFrame("Space Invaders");
@@ -45,7 +44,7 @@ public class SpaceInvaders extends JFrame implements Commons {
 		String topmessage = "<html><br><br>" + TOP_MESSAGE + "</html>";
 		String message = "<html>" + INITIAL_MESSAGE + "</html>";
 
-		start = new JButton("Iniciar Miss�o");
+		start = new JButton("Start Mission");
 		start.addActionListener(new ButtonListener());
 		start.setBounds(800, 800, 200, 100);
 
