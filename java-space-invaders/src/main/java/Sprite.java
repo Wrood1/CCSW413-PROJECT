@@ -62,4 +62,41 @@ public class Sprite {
         public boolean isDying() {
             return this.dying;
         }
+        
+    /**
+     * Clones the sprite.
+     * Performs a shallow copy of the object and a deep copy of the Image object.
+     */
+    @Override
+    protected Object clone() {
+        try {
+            Sprite clonedSprite = (Sprite) super.clone(); // Performs shallow copy
+            // Deep copy of the image (assuming Image is immutable)
+            clonedSprite.image = this.image;
+            return clonedSprite;
+        } catch (CloneNotSupportedException e) {
+            // This should never happen since we implement Cloneable
+            throw new InternalError(e);
+        }
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Sprite)) return false;
+        Sprite sprite = (Sprite) o;
+        return visible == sprite.visible &&
+                x == sprite.x &&
+                y == sprite.y &&
+                dying == sprite.dying &&
+                Objects.equals(image, sprite.image);
+    }
+
+    /**
+      Generates a hash code for sprite
+      ---- The hash code is based on sprite's attributes.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(visible, image, x, y, dying);
+    }
 }
