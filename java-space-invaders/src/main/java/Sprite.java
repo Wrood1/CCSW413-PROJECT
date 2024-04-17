@@ -1,10 +1,11 @@
 import java.awt.Image;
+import java.util.Objects;// for Objects.hash ***
 
 /**
  * 
  * @author
  */
-public class Sprite {
+public class Sprite implements Cloneable{
 
         private boolean visible;
         private Image image;
