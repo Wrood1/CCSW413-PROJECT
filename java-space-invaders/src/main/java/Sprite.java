@@ -1,69 +1,105 @@
 import java.awt.Image;
-import java.util.Objects;// for Objects.hash ***
+import java.util.Objects;
 
 /**
- * 
- * @author
+ * Base class for game sprites.
  */
-public class Sprite implements Cloneable{
+public class Sprite implements Cloneable {
+    // Instance variables
+    private boolean visible; // Indicates whether the sprite is visible
+    private Image image; // Represents the graphical image associated with the sprite
+    protected int x;     // x-coordinate of the sprite
 
-        private boolean visible;
-        private Image image;
-        protected int x;
-        protected int y;
-        protected boolean dying;
-        protected int dx;
+    protected int y;// y-coordinate of the sprite
+    protected boolean dying;     // Indicates whether the sprite is in a dying state
 
-        /*
-         * Constructor
-         */
-        public Sprite() {
-            visible = true;
-        }
+    protected int dx;
 
-        public void die() {
-            visible = false;
-        }
+    /*
+     * Constructor
+     */
+    public Sprite() {
+        visible = true;
+    }
 
-        public boolean isVisible() {
-            return visible;
-        }
+    /**
+     * Marks the sprite as "dying".
+     * This typically means that the sprite will be removed from the game soon.
+     */
+    public void die() {
+        visible = false;
+    }
 
-        protected void setVisible(boolean visible) {
-            this.visible = visible;
-        }
+    /**
+     * Checks if the sprite is visible.
+     */
+    public boolean isVisible() {
+        return visible;
+    }
 
-        public void setImage(Image image) {
-            this.image = image;
-        }
+    /**
+     * Sets the visibility of the sprite.
+     */
+    protected void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 
-        public Image getImage() {
-            return image;
-        }
+    /**
+     * Sets the image associated with the sprite.
+     */
+    public void setImage(Image image) {
+        this.image = image;
+    }
 
-        public void setX(int x) {
-            this.x = x;
-        }
+    /**
+     * Gets the image associated with the sprite.
+     */
+    public Image getImage() {
+        return image;
+    }
 
-        public void setY(int y) {
-            this.y = y;
-        }
-        public int getY() {
-            return y;
-        }
+    /**
+     * Sets the x-coordinate of the sprite.
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
 
-        public int getX() {
-            return x;
-        }
+    /**
+     * Sets the y-coordinate of the sprite.
+     */
+    public void setY(int y) {
+        this.y = y;
+    }
 
-        public void setDying(boolean dying) {
-            this.dying = dying;
-        }
+    /**
+     * Gets the y-coordinate of the sprite.
+     */
+    public int getY() {
+        return y;
+    }
 
-        public boolean isDying() {
-            return this.dying;
-        }
-        
+    /**
+     * Gets the x-coordinate of the sprite.
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * Sets whether the sprite is in a dying state.
+     */
+    public void setDying(boolean dying) {
+        this.dying = dying;
+    }
+
+    /**
+     * Checks if the sprite is in a dying state.
+     */
+    public boolean isDying() {
+        return this.dying;
+    }
+
     /**
      * Clones the sprite.
      * Performs a shallow copy of the object and a deep copy of the Image object.
@@ -80,6 +116,11 @@ public class Sprite implements Cloneable{
             throw new InternalError(e);
         }
     }
+
+    /**
+     * Checks if this sprite is equal to another object.
+     * Two sprites are considered equal if their attributes are equal.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
