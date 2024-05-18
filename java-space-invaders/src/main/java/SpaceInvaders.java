@@ -3,36 +3,36 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /**
- * 
+ *
  * @author reema, wrood, fareeda, sara
-*/
+ */
 
 public class SpaceInvaders extends JFrame implements Commons {
 	private static final long serialVersionUID = -4905230094675077405L;
 
 	private JButton start, help;
-	
+
 	/* Intro */
 	private static final String TOP_MESSAGE = "Space Invaders <br> Java Version";
 	private static final String INITIAL_MESSAGE ="Help us, amazing captain!!"
-	+ "<br>The aliens are trying to invade our planet."
-	+ "<br><br><br>Your mission:"
-	+ "<br><br>Kill all the invading aliens before they can invade planet Earth."
-	+ "<br>And preferably, don't die during the battle!";
+			+ "<br>The aliens are trying to invade our planet."
+			+ "<br><br><br>Your mission:"
+			+ "<br><br>Kill all the invading aliens before they can invade planet Earth."
+			+ "<br>And preferably, don't die during the battle!";
 	/* HELP */
 	private static final String HELP_TOP_MESSAGE = "HELP";
-	private static final String HELP_MESSAGE = "Controles: " 
-	+"<br><br>Movement to the Left: <br>Left Arrow key"
-	+ "<br><br>Movement to the Right: <br>Right Arrow key"
-	+ "<br><br>Shoot: <br>Space bar";
+	private static final String HELP_MESSAGE = "Controles: "
+			+"<br><br>Movement to the Left: <br>Left Arrow key"
+			+ "<br><br>Movement to the Right: <br>Right Arrow key"
+			+ "<br><br>Shoot: <br>Space bar";
 
 	private static final int BOARD_HEIGHT = 600;
 
-        private JFrame frame2, frame3;
-	 
+	private JFrame frame2, frame3;
+
 	public SpaceInvaders() {
-        initUI();
-        }
+		initUI();
+	}
 
 	/*
 	 * Constructor
@@ -78,21 +78,21 @@ public class SpaceInvaders extends JFrame implements Commons {
 	}
 
 	public void showMainMenu() {
-          frame2.setVisible(true);
-       }
+		frame2.setVisible(true);
+	}
 
-        public void startGame() {
-          JFrame frame = new JFrame("Space Invaders");
-          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-          frame.setSize(BOARD_WIDTH, BOARD_HEIGHT);
+	public void startGame() {
+		JFrame frame = new JFrame("Space Invaders");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(BOARD_WIDTH, BOARD_HEIGHT);
 
-          frame.getContentPane().add(Board.getInstance());
-          frame.setResizable(false);
-          frame.setLocationRelativeTo(null);
-          frame.setVisible(true);
+		frame.getContentPane().add(Board.getInstance());
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 
-          closeIntro();
-       }
+		closeIntro();
+	}
 
 	public void closeIntro() {
 		frame2.dispose();
@@ -107,7 +107,7 @@ public class SpaceInvaders extends JFrame implements Commons {
 	private class ButtonListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {
-		startGame();
+			startGame();
 
 		}
 	}
@@ -146,10 +146,10 @@ public class SpaceInvaders extends JFrame implements Commons {
 			frame3.setVisible(true);
 		}
 	}
-		/*
+	/*
 	 * Main
 	 */
-    public static void main(String[] args) {
-        SpaceInvadersProxy proxy = new SpaceInvadersProxy();
-        proxy.startGame();
-    }	}
+	public static void main(String[] args) {
+		SpaceInvadersProxy proxy = new SpaceInvadersProxy();
+		proxy.startGame();
+	}	}
