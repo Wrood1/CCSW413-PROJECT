@@ -10,9 +10,9 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
 
 public class Board extends JPanel implements Runnable, Commons {
     @Serial
@@ -26,7 +26,9 @@ public class Board extends JPanel implements Runnable, Commons {
     private GameOver gameend;
     private Won vunnet;
     private ArrayList<Bomb> bombs;
+    private GameStateManager gameStateManager;
 
+    
     private int alienX = 150;
     private int alienY = 25;
     private int direction = -1;
@@ -46,6 +48,10 @@ public class Board extends JPanel implements Runnable, Commons {
         initBoard();
         shotPrototype = new Shot(); // Initialize shotPrototype
 
+        gameStateManager = new GameStateManager(); // Initialize GameStateManager
+        GameOverDisplay gameOverDisplay = new GameOverDisplay(); // Create GameOverDisplay observer
+        gameStateManager.registerObserver(gameOverDisplay); // Register observer
+    
     }
 
     private void initBoard() {
@@ -75,7 +81,6 @@ public class Board extends JPanel implements Runnable, Commons {
         bombs = new ArrayList<>(); // Initialize the list of bombs
 
         ImageIcon ii = new ImageIcon(this.getClass().getResource(alienpix));
-
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
                 Alien alien = new Alien(alienX + 18 * j, alienY + 18 * i);
@@ -83,7 +88,6 @@ public class Board extends JPanel implements Runnable, Commons {
                 aliens.add(alien);
             }
         }
-
         if (animator == null || !ingame) {
             animator = new Thread(this);
             animator.start();
@@ -119,6 +123,8 @@ public class Board extends JPanel implements Runnable, Commons {
             player.die();
             havewon = false;
             ingame = false;
+            notifyGameOver(); // Notify observers on game over
+
         }
     }
     public void drawGameEnd(Graphics g) {
@@ -189,6 +195,10 @@ public class Board extends JPanel implements Runnable, Commons {
                 BOARD_WIDTH / 2);
     }
 
+    private void notifyGameOver() {
+        gameStateManager.notifyObservers("GAME_OVER");
+    }
+
     public void animationCycle() {
         for (Shot shot : shots) {
             if (shot.isVisible()) {
@@ -243,7 +253,6 @@ public class Board extends JPanel implements Runnable, Commons {
                 Alien alien = it.next();
                 int alienX = alien.getX();
                 int alienY = alien.getY();
-
                 if (alien.isVisible() && shot.isVisible()) {
                     if (shotX >= (alienX) && shotX <= (alienX + ALIEN_WIDTH)
                             && shotY >= (alienY)
@@ -279,7 +288,6 @@ public class Board extends JPanel implements Runnable, Commons {
                     a2.setY(a2.getY() + GO_DOWN);
                 }
             }
-
             if (x <= BORDER_LEFT && direction != 1) {
                 direction = 1;
 
@@ -300,6 +308,7 @@ public class Board extends JPanel implements Runnable, Commons {
                     havewon = false;
                     ingame = false;
                     message = "Aliens are invading the galaxy!";
+                    notifyGameOver(); // Notify observers on game over
                 }
                 alien.act(direction);
             }
@@ -318,7 +327,6 @@ public class Board extends JPanel implements Runnable, Commons {
                 b.setX(a.getX());
                 b.setY(a.getY());
             }
-
             int bombX = b.getX();
             int bombY = b.getY();
             int playerX = player.getX();
@@ -332,6 +340,7 @@ public class Board extends JPanel implements Runnable, Commons {
                     player.setImage(ii.getImage());
                     player.setDying(true);
                     b.setDestroyed(true);
+                    notifyGameOver(); // Notify observers on game over
 
                 }
             }
