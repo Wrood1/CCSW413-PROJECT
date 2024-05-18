@@ -23,7 +23,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private Player player;
     private Shot shot;
     private ArrayList<Shot> shots; // Use an ArrayList to manage multiple shots
-    private GameOver gameend = new GameOver();
+    private GameOver gameend;
 
 
     private Won vunnet;
@@ -51,8 +51,8 @@ public class Board extends JPanel implements Runnable, Commons {
         shotPrototype = new Shot(); // Initialize shotPrototype
 
         gameStateManager = new GameStateManager(); // Initialize GameStateManager
-        GameOverDisplay gameOverDisplay = new GameOverDisplay(); // Create GameOverDisplay observer
-        gameStateManager.registerObserver(gameOverDisplay); // Register observer
+        gameend = new GameOver(); // Create GameOver instance
+        gameStateManager.registerObserver(gameend); // Register GameOver observer
 
     }
 
@@ -119,15 +119,14 @@ public class Board extends JPanel implements Runnable, Commons {
         if (player.isVisible()) {
             g.drawImage(player.getImage(), player.getX(), player.getY(), this);
         }
-
+    
         if (player.isDying()) {
             player.die();
             havewon = false;
             ingame = false;
             notifyGameOver(); // Notify observers on game over
-
         }
-    }
+    }    
     public void drawGameEnd(Graphics g) {
         g.drawImage(gameend.getImage(), 0, 0, this);
     }
@@ -152,27 +151,25 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void paint(Graphics g) {
         super.paint(g);
-
+    
         g.setColor(Color.black);
         g.fillRect(0, 0, d.width, d.height);
         g.setColor(Color.green);
-
+    
         if (ingame) {
-
             g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
             drawAliens(g);
             drawPlayer(g);
             drawBombing(g);
             drawShot(g);
+        } else {
+            drawGameEnd(g); // Draw game end screen
         }
-        else {
-            drawGameEnd(g);
-        }
-
+    
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
-
     }
+    
 
     public void gameOver() {
         Graphics g = this.getGraphics();
@@ -218,7 +215,6 @@ public class Board extends JPanel implements Runnable, Commons {
                     Alien alien = it.next();
                     int alienX = alien.getX();
                     int alienY = alien.getY();
-
                     if (alien.isVisible() && shot.isVisible()) {
                         if (shotX >= (alienX) && shotX <= (alienX + ALIEN_WIDTH)
                                 && shotY >= (alienY)
@@ -242,11 +238,11 @@ public class Board extends JPanel implements Runnable, Commons {
         if (deaths == NUMBER_OF_ALIENS_TO_DESTROY) {
             ingame = false;
             message = "Congratulations! You saved the galaxy!";
-        }
-
+        }        
+    
         // player
         player.act();
-
+    
         // shot
         if (shot.isVisible()) {
             Iterator<Alien> it = aliens.iterator();
@@ -275,35 +271,34 @@ public class Board extends JPanel implements Runnable, Commons {
             else
                 shot.setY(y);
         }
-
+    
         // aliens
         Iterator<Alien> it1 = aliens.iterator();
         while (it1.hasNext()) {
-            Alien a1 = it1.next();
+            Alien a1 = (Alien) it1.next();
             int x = a1.getX();
-
+        
             if (x >= BOARD_WIDTH - BORDER_RIGHT && direction != -1) {
                 direction = -1;
                 Iterator<Alien> i1 = aliens.iterator();
                 while (i1.hasNext()) {
-                    Alien a2 = i1.next();
+                    Alien a2 = (Alien) i1.next();
                     a2.setY(a2.getY() + GO_DOWN);
                 }
             }
             if (x <= BORDER_LEFT && direction != 1) {
                 direction = 1;
-
                 Iterator<Alien> i2 = aliens.iterator();
                 while (i2.hasNext()) {
-                    Alien a = i2.next();
+                    Alien a = (Alien) i2.next();
                     a.setY(a.getY() + GO_DOWN);
                 }
             }
         }
-
+        
         Iterator<Alien> it = aliens.iterator();
         while (it.hasNext()) {
-            Alien alien = it.next();
+            Alien alien = (Alien) it.next();
             if (alien.isVisible()) {
                 int y = alien.getY();
                 if (y > GROUND - ALIEN_HEIGHT) {
@@ -313,16 +308,15 @@ public class Board extends JPanel implements Runnable, Commons {
                     notifyGameOver(); // Notify observers on game over
                 }
                 alien.act(direction);
-
             }
         }
-
+        
         // bombs
         Iterator<Alien> i3 = aliens.iterator();
         Random generator = new Random();
         while (i3.hasNext()) {
             int shot = generator.nextInt(15);
-            Alien a = i3.next();
+            Alien a = (Alien) i3.next();
             Bomb b = a.getBomb();
             if (shot == CHANCE && a.isVisible() && b.isDestroyed()) {
                 b.setDestroyed(false);
@@ -333,7 +327,7 @@ public class Board extends JPanel implements Runnable, Commons {
             int bombY = b.getY();
             int playerX = player.getX();
             int playerY = player.getY();
-
+        
             if (player.isVisible() && !b.isDestroyed()) {
                 if (bombX >= (playerX) && bombX <= (playerX + PLAYER_WIDTH)
                         && bombY >= (playerY)
@@ -343,20 +337,17 @@ public class Board extends JPanel implements Runnable, Commons {
                     player.setDying(true);
                     b.setDestroyed(true);
                     notifyGameOver(); // Notify observers on game over
-
                 }
             }
-
+        
             if (!b.isDestroyed()) {
                 b.setY(b.getY() + 1);
                 if (b.getY() >= GROUND - BOMB_HEIGHT) {
                     b.setDestroyed(true);
                 }
             }
-        }
+        }        
     }
-
-
     public void run() {
         long beforeTime, timeDiff, sleep;
 
