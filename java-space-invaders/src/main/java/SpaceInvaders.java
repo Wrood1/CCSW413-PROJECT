@@ -18,7 +18,7 @@ class SpaceInvadersProxy implements Commons {
         if (realSubject == null) {
             realSubject = new SpaceInvaders();
         }
-        realSubject.startGame();
+       // realSubject.startGame();
     }
 }
 
@@ -94,7 +94,7 @@ public class SpaceInvaders extends JFrame implements Commons {
 		frame2.setResizable(false);
 
 	}
-	
+	/* 
 	public void startGame() {
         JFrame frame = new JFrame("Space Invaders");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -106,7 +106,7 @@ public class SpaceInvaders extends JFrame implements Commons {
         frame.setVisible(true);
 		
         closeIntro();		
-	}
+	}*/
 
 	public void closeIntro() {
 		frame2.dispose();
