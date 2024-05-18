@@ -174,4 +174,3 @@ public class SpaceInvaders extends JFrame implements Commons {
 	public static void main(String[] args) {
         SpaceInvadersProxy proxy = new SpaceInvadersProxy();
         proxy.startGame();	}	}
-}

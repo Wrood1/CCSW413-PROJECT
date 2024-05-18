@@ -161,17 +161,14 @@ public class Board extends JPanel implements Runnable, Commons {
             drawShot(g);
         }
 
-
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
     }
 
     public void gameOver() {
         Graphics g = this.getGraphics();
-
         gameend = new GameOver();
         vunnet = new Won();
-
         // g.setColor(Color.black);
         g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGTH);
         if (havewon == true) {
@@ -183,7 +180,6 @@ public class Board extends JPanel implements Runnable, Commons {
         g.fillRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
         g.setColor(Color.white);
         g.drawRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
-
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = this.getFontMetrics(small);
 
