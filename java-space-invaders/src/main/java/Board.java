@@ -25,6 +25,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private ArrayList<Shot> shots; // Use an ArrayList to manage multiple shots
     private GameOver gameend = new GameOver();
 
+
     private Won vunnet;
     private ArrayList<Bomb> bombs;
     private GameStateManager gameStateManager;
