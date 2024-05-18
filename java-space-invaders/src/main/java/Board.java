@@ -13,6 +13,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+
 public class Board extends JPanel implements Runnable, Commons {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -22,10 +23,12 @@ public class Board extends JPanel implements Runnable, Commons {
     private Player player;
     private Shot shot;
     private ArrayList<Shot> shots; // Use an ArrayList to manage multiple shots
-    private GameOver gameend;
+    private GameOver gameend = new GameOver();
+
     private Won vunnet;
     private ArrayList<Bomb> bombs;
     private GameStateManager gameStateManager;
+
 
     private int alienX = 150;
     private int alienY = 25;
@@ -49,6 +52,7 @@ public class Board extends JPanel implements Runnable, Commons {
         gameStateManager = new GameStateManager(); // Initialize GameStateManager
         GameOverDisplay gameOverDisplay = new GameOverDisplay(); // Create GameOverDisplay observer
         gameStateManager.registerObserver(gameOverDisplay); // Register observer
+
     }
 
     private void initBoard() {
@@ -68,9 +72,9 @@ public class Board extends JPanel implements Runnable, Commons {
         return instance;
     }
 
+
     private void gameInit() {
         shot = new Shot(); // Initialize the shot object
-
         aliens = new ArrayList<>();
         shots = new ArrayList<>(); // Initialize the list of shots
         player = new Player(); // Create a Player object
@@ -94,6 +98,7 @@ public class Board extends JPanel implements Runnable, Commons {
     public void addShot(Shot shot) {
         shots.add(shot);
         System.out.println("Shot added: " + shot); // Print the shot being added just for check
+
     }
 
     public void drawAliens(Graphics g) {
@@ -109,7 +114,6 @@ public class Board extends JPanel implements Runnable, Commons {
             }
         }
     }
-
     public void drawPlayer(Graphics g) {
         if (player.isVisible()) {
             g.drawImage(player.getImage(), player.getX(), player.getY(), this);
@@ -120,13 +124,12 @@ public class Board extends JPanel implements Runnable, Commons {
             havewon = false;
             ingame = false;
             notifyGameOver(); // Notify observers on game over
+
         }
     }
-
     public void drawGameEnd(Graphics g) {
         g.drawImage(gameend.getImage(), 0, 0, this);
     }
-
     public void drawShot(Graphics g) {
         for (Shot shot : shots) {
             if (shot.isVisible()) {
@@ -134,7 +137,6 @@ public class Board extends JPanel implements Runnable, Commons {
             }
         }
     }
-
     public void drawBombing(Graphics g) {
         Iterator<Bomb> i3 = bombs.iterator();
 
@@ -155,46 +157,44 @@ public class Board extends JPanel implements Runnable, Commons {
         g.setColor(Color.green);
 
         if (ingame) {
+
             g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
             drawAliens(g);
             drawPlayer(g);
             drawBombing(g);
             drawShot(g);
-        } else {
-            // If the game is over, draw the game over screen
+        }
+        else {
             drawGameEnd(g);
         }
 
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
+
     }
 
     public void gameOver() {
-        // Mark the game as not in-game to stop the repainting of game elements
-        ingame = false;
         Graphics g = this.getGraphics();
-        if (g != null) {
-            gameend = new GameOver();
-            vunnet = new Won();
-            // Clear the screen
-            g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGTH);
-            if (havewon) {
-                g.drawImage(vunnet.getImage(), 0, 0, this);
-            } else {
-                g.drawImage(gameend.getImage(), 0, 0, this);
-            }
-            g.setColor(new Color(0, 32, 48));
-            g.fillRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
-            g.setColor(Color.white);
-            g.drawRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
-            Font small = new Font("Helvetica", Font.BOLD, 14);
-            FontMetrics metr = this.getFontMetrics(small);
-
-            g.setColor(Color.white);
-            g.setFont(small);
-            g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2,
-                    BOARD_WIDTH / 2);
+        gameend = new GameOver();
+        vunnet = new Won();
+        // g.setColor(Color.black);
+        g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGTH);
+        if (havewon == true) {
+            g.drawImage(vunnet.getImage(), 0, 0, this);
+        } else {
+            g.drawImage(gameend.getImage(), 0, 0, this);
         }
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
+        g.setColor(Color.white);
+        g.drawRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
+        Font small = new Font("Helvetica", Font.BOLD, 14);
+        FontMetrics metr = this.getFontMetrics(small);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2,
+                BOARD_WIDTH / 2);
     }
 
     private void notifyGameOver() {
@@ -289,9 +289,9 @@ public class Board extends JPanel implements Runnable, Commons {
                     a2.setY(a2.getY() + GO_DOWN);
                 }
             }
-
             if (x <= BORDER_LEFT && direction != 1) {
                 direction = 1;
+
                 Iterator<Alien> i2 = aliens.iterator();
                 while (i2.hasNext()) {
                     Alien a = i2.next();
@@ -306,29 +306,28 @@ public class Board extends JPanel implements Runnable, Commons {
             if (alien.isVisible()) {
                 int y = alien.getY();
                 if (y > GROUND - ALIEN_HEIGHT) {
+                    havewon = false;
                     ingame = false;
-                    message = "Invasion!";
+                    message = "Aliens are invading the galaxy!";
+                    notifyGameOver(); // Notify observers on game over
                 }
                 alien.act(direction);
+
             }
         }
 
         // bombs
         Iterator<Alien> i3 = aliens.iterator();
         Random generator = new Random();
-
         while (i3.hasNext()) {
             int shot = generator.nextInt(15);
             Alien a = i3.next();
             Bomb b = a.getBomb();
-
             if (shot == CHANCE && a.isVisible() && b.isDestroyed()) {
                 b.setDestroyed(false);
                 b.setX(a.getX());
                 b.setY(a.getY());
-                bombs.add(b); // Add the bomb to the list
             }
-
             int bombX = b.getX();
             int bombY = b.getY();
             int playerX = player.getX();
@@ -336,23 +335,26 @@ public class Board extends JPanel implements Runnable, Commons {
 
             if (player.isVisible() && !b.isDestroyed()) {
                 if (bombX >= (playerX) && bombX <= (playerX + PLAYER_WIDTH)
-                        && bombY >= (playerY) && bombY <= (playerY + PLAYER_HEIGHT)) {
+                        && bombY >= (playerY)
+                        && bombY <= (playerY + PLAYER_HEIGHT)) {
                     ImageIcon ii = new ImageIcon(this.getClass().getResource(expl));
                     player.setImage(ii.getImage());
                     player.setDying(true);
                     b.setDestroyed(true);
+                    notifyGameOver(); // Notify observers on game over
+
                 }
             }
 
             if (!b.isDestroyed()) {
                 b.setY(b.getY() + 1);
-
                 if (b.getY() >= GROUND - BOMB_HEIGHT) {
                     b.setDestroyed(true);
                 }
             }
         }
     }
+
 
     public void run() {
         long beforeTime, timeDiff, sleep;
@@ -375,27 +377,21 @@ public class Board extends JPanel implements Runnable, Commons {
             }
             beforeTime = System.currentTimeMillis();
         }
-
-        // when the game loop exits, call gameOver to display the end screen
         gameOver();
     }
 
     private class TAdapter extends KeyAdapter {
         public void keyReleased(KeyEvent e) {
-            player.keyReleased(e);
-        }
-
-        public void keyPressed(KeyEvent e) {
-            player.keyPressed(e);
-
-            int x = player.getX();
-            int y = player.getY();
             int key = e.getKeyCode();
-
-            if (key == KeyEvent.VK_SPACE) {
-                Shot shot = new Shot(x, y); // Create a new shot
-                addShot(shot); // Add the new shot to the board
+            if (ingame && key == KeyEvent.VK_SPACE) {
+                Shot newShot = shotPrototype.clone();
+                newShot.setX(player.getX()); // Set initial position
+                newShot.setY(player.getY());
+                newShot.setVisible(true); // Ensure shot is visible when fired
+                addShot(newShot); // Add the new shot to the board
             }
+            player.keyPressed(e); // Move player even if space is pressed
+
         }
     }
 }
