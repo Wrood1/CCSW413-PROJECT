@@ -1,9 +1,6 @@
 import javax.swing.ImageIcon;
 
-/**
- * 
- * @author
- */
+
 public class GameOver extends Sprite implements Commons {
 
 	private final String gameOver = "/img/gameover.png";
@@ -14,9 +11,7 @@ public class GameOver extends Sprite implements Commons {
 	 */
 	public GameOver() {
 		ImageIcon ii = new ImageIcon(this.getClass().getResource(gameOver));
-
 		setWidth(ii.getImage().getWidth(null));
-
 		setImage(ii.getImage());
 		setX(0);
 		setY(0);

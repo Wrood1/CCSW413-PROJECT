@@ -3,62 +3,44 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /**
- * 
- * @author 
-*/
-
-class SpaceInvadersProxy implements Commons {
-    private SpaceInvaders realSubject;
-
-    public SpaceInvadersProxy() {
-        realSubject = null;
-    }
-
-    public void startGame() {
-        if (realSubject == null) {
-            realSubject = new SpaceInvaders();
-        }
-       // realSubject.startGame();
-    }
-}
+ *
+ * @author reema, wrood, fareeda, sara
+ */
 
 public class SpaceInvaders extends JFrame implements Commons {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4905230094675077405L;
 
 	private JButton start, help;
-	
-	/*
-	 * Inicio
-	 */
+
+	/* Intro */
 	private static final String TOP_MESSAGE = "Space Invaders <br> Java Version";
 	private static final String INITIAL_MESSAGE ="Help us, amazing captain!!"
-	+ "<br>The aliens are trying to invade our planet."
-	+ "<br><br><br>Your mission:"
-	+ "<br><br>Kill all the invading aliens before they can invade planet Earth."
-	+ "<br>And preferably, don't die during the battle!";
-	/*
-	 * HELP
-	 */
+			+ "<br>The aliens are trying to invade our planet."
+			+ "<br><br><br>Your mission:"
+			+ "<br><br>Kill all the invading aliens before they can invade planet Earth."
+			+ "<br>And preferably, don't die during the battle!";
+	/* HELP */
 	private static final String HELP_TOP_MESSAGE = "HELP";
-	private static final String HELP_MESSAGE = "Controles: " 
-	+"<br><br>Movement to the Left: <br>Left Arrow key"
-	+ "<br><br>Movement to the Right: <br>Right Arrow key"
-	+ "<br><br>Shoot: <br>Space bar";
+	private static final String HELP_MESSAGE = "Controles: "
+			+"<br><br>Movement to the Left: <br>Left Arrow key"
+			+ "<br><br>Movement to the Right: <br>Right Arrow key"
+			+ "<br><br>Shoot: <br>Space bar";
 
 	private static final int BOARD_HEIGHT = 600;
 
-	JFrame frame = new JFrame("Space Invaders");
-	JFrame frame2 = new JFrame("Space Invaders");
-	JFrame frame3 = new JFrame("HELP");
+	private JFrame frame2, frame3;
+
+	public SpaceInvaders() {
+		initUI();
+	}
 
 	/*
 	 * Constructor
 	 */
-	public SpaceInvaders() {
+	private void initUI() {
+		frame2 = new JFrame("Space Invaders");
+		frame3 = new JFrame("HELP");
+
 		String topmessage = "<html><br><br>" + TOP_MESSAGE + "</html>";
 		String message = "<html>" + INITIAL_MESSAGE + "</html>";
 
@@ -69,20 +51,20 @@ public class SpaceInvaders extends JFrame implements Commons {
 		help = new JButton("HELP");
 		help.addActionListener(new HelpButton());
 
-		JLabel tekst = new JLabel(message, SwingConstants.CENTER);
-		JLabel toptekst = new JLabel(topmessage, SwingConstants.CENTER);
+		JLabel text = new JLabel(message, SwingConstants.CENTER);
+		JLabel toptext = new JLabel(topmessage, SwingConstants.CENTER);
 
 		Font font = new Font("Helvetica", Font.BOLD, 12);
-		tekst.setFont(font);
+		text.setFont(font);
 
 		Font font2 = new Font("Helvetica", Font.BOLD, 20);
-		toptekst.setFont(font2);
+		toptext.setFont(font2);
 
 		frame2.setTitle("Space Invaders");
 
-		frame2.add(tekst);
+		frame2.add(text);
 
-		frame2.add(toptekst, BorderLayout.PAGE_START);
+		frame2.add(toptext, BorderLayout.PAGE_START);
 		JPanel nedredel = new JPanel();
 		nedredel.add(help);
 		nedredel.add(start);
@@ -94,19 +76,23 @@ public class SpaceInvaders extends JFrame implements Commons {
 		frame2.setResizable(false);
 
 	}
-	/* 
-	public void startGame() {
-        JFrame frame = new JFrame("Space Invaders");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(BOARD_WIDTH, BOARD_HEIGHT);
 
-        frame.getContentPane().add(Board.getInstance());
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-		
-        closeIntro();		
-	}*/
+	public void showMainMenu() {
+		frame2.setVisible(true);
+	}
+
+	public void startGame() {
+		JFrame frame = new JFrame("Space Invaders");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(BOARD_WIDTH, BOARD_HEIGHT);
+
+		frame.getContentPane().add(Board.getInstance());
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+
+		closeIntro();
+	}
 
 	public void closeIntro() {
 		frame2.dispose();
@@ -121,15 +107,7 @@ public class SpaceInvaders extends JFrame implements Commons {
 	private class ButtonListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {
-
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setSize(BOARD_WIDTH, BOARD_HEIGTH);
-			 // Use the Singleton instance of Board
-			 frame.getContentPane().add(Board.getInstance());
-			frame.setResizable(false);
-			frame.setLocationRelativeTo(null);
-			frame.setVisible(true);
-			closeIntro();
+			startGame();
 
 		}
 	}
@@ -147,18 +125,18 @@ public class SpaceInvaders extends JFrame implements Commons {
 
 			String topmessage = "<html><br>" + HELP_TOP_MESSAGE + "</html>";
 			String message = "<html>" + HELP_MESSAGE + "</html> ";
-			JLabel tekst = new JLabel(message, SwingConstants.CENTER);
-			JLabel toptekst = new JLabel(topmessage, SwingConstants.CENTER);
+			JLabel text = new JLabel(message, SwingConstants.CENTER);
+			JLabel toptext = new JLabel(topmessage, SwingConstants.CENTER);
 
 			Font font = new Font("Helvetica", Font.BOLD, 12);
-			tekst.setFont(font);
+			text.setFont(font);
 
 			Font font2 = new Font("Helvetica", Font.BOLD, 20);
-			toptekst.setFont(font2);
+			toptext.setFont(font2);
 
-			frame3.add(tekst);
+			frame3.add(text);
 
-			frame3.add(toptekst, BorderLayout.PAGE_START);
+			frame3.add(toptext, BorderLayout.PAGE_START);
 
 			frame3.add(close, BorderLayout.PAGE_END);
 			frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -168,9 +146,10 @@ public class SpaceInvaders extends JFrame implements Commons {
 			frame3.setVisible(true);
 		}
 	}
-		/*
+	/*
 	 * Main
 	 */
 	public static void main(String[] args) {
-        SpaceInvadersProxy proxy = new SpaceInvadersProxy();
-        proxy.startGame();	}	}
+		SpaceInvadersProxy proxy = new SpaceInvadersProxy();
+		proxy.startGame();
+	}	}

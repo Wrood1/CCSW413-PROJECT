@@ -12,22 +12,25 @@ import javax.swing.JOptionPane;
 }
 
 class GameStateManager implements GameStateSubject {
+    //1
     private List<GameStateObserver> observers;
-
     public GameStateManager() {
         this.observers = new ArrayList<>();
     }
 
+    //2
     @Override
     public void registerObserver(GameStateObserver observer) {
         observers.add(observer);
     }
 
+    //
     @Override
     public void removeObserver(GameStateObserver observer) {
         observers.remove(observer);
     }
 
+    //3
     @Override
     public void notifyObservers(String gameState) {
         for (GameStateObserver observer : observers) {
@@ -46,7 +49,7 @@ class GameOverDisplay implements GameStateObserver {
     }
     
     private void showGameOverScreen() {
-        // Implement your game over screen display logic here
+        // Implement the Game Over screen display logic here
         JOptionPane.showMessageDialog(null, "Game Over! Try Again?");
     }
 }
