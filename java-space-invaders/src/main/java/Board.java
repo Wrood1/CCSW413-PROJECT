@@ -23,12 +23,14 @@ public class Board extends JPanel implements Runnable, Commons {
     private Player player;
     private Shot shot;
     private ArrayList<Shot> shots; // Use an ArrayList to manage multiple shots
-    private GameOver gameend;
+    private GameOver gameend = new GameOver();
+
+
     private Won vunnet;
     private ArrayList<Bomb> bombs;
     private GameStateManager gameStateManager;
 
-    
+
     private int alienX = 150;
     private int alienY = 25;
     private int direction = -1;
@@ -51,7 +53,7 @@ public class Board extends JPanel implements Runnable, Commons {
         gameStateManager = new GameStateManager(); // Initialize GameStateManager
         GameOverDisplay gameOverDisplay = new GameOverDisplay(); // Create GameOverDisplay observer
         gameStateManager.registerObserver(gameOverDisplay); // Register observer
-    
+
     }
 
     private void initBoard() {
@@ -74,7 +76,6 @@ public class Board extends JPanel implements Runnable, Commons {
 
     private void gameInit() {
         shot = new Shot(); // Initialize the shot object
-
         aliens = new ArrayList<>();
         shots = new ArrayList<>(); // Initialize the list of shots
         player = new Player(); // Create a Player object
@@ -130,7 +131,6 @@ public class Board extends JPanel implements Runnable, Commons {
     public void drawGameEnd(Graphics g) {
         g.drawImage(gameend.getImage(), 0, 0, this);
     }
-
     public void drawShot(Graphics g) {
         for (Shot shot : shots) {
             if (shot.isVisible()) {
@@ -138,7 +138,6 @@ public class Board extends JPanel implements Runnable, Commons {
             }
         }
     }
-
     public void drawBombing(Graphics g) {
         Iterator<Bomb> i3 = bombs.iterator();
 
@@ -166,9 +165,13 @@ public class Board extends JPanel implements Runnable, Commons {
             drawBombing(g);
             drawShot(g);
         }
+        else {
+            drawGameEnd(g);
+        }
 
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
+
     }
 
     public void gameOver() {
@@ -275,16 +278,15 @@ public class Board extends JPanel implements Runnable, Commons {
 
         // aliens
         Iterator<Alien> it1 = aliens.iterator();
-
         while (it1.hasNext()) {
-            Alien a1 = (Alien) it1.next();
+            Alien a1 = it1.next();
             int x = a1.getX();
 
             if (x >= BOARD_WIDTH - BORDER_RIGHT && direction != -1) {
                 direction = -1;
                 Iterator<Alien> i1 = aliens.iterator();
                 while (i1.hasNext()) {
-                    Alien a2 = (Alien) i1.next();
+                    Alien a2 = i1.next();
                     a2.setY(a2.getY() + GO_DOWN);
                 }
             }
@@ -293,7 +295,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
                 Iterator<Alien> i2 = aliens.iterator();
                 while (i2.hasNext()) {
-                    Alien a = (Alien) i2.next();
+                    Alien a = i2.next();
                     a.setY(a.getY() + GO_DOWN);
                 }
             }
@@ -301,7 +303,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
         Iterator<Alien> it = aliens.iterator();
         while (it.hasNext()) {
-            Alien alien = (Alien) it.next();
+            Alien alien = it.next();
             if (alien.isVisible()) {
                 int y = alien.getY();
                 if (y > GROUND - ALIEN_HEIGHT) {
@@ -311,6 +313,7 @@ public class Board extends JPanel implements Runnable, Commons {
                     notifyGameOver(); // Notify observers on game over
                 }
                 alien.act(direction);
+
             }
         }
 
@@ -319,10 +322,9 @@ public class Board extends JPanel implements Runnable, Commons {
         Random generator = new Random();
         while (i3.hasNext()) {
             int shot = generator.nextInt(15);
-            Alien a = (Alien) i3.next();
+            Alien a = i3.next();
             Bomb b = a.getBomb();
             if (shot == CHANCE && a.isVisible() && b.isDestroyed()) {
-
                 b.setDestroyed(false);
                 b.setX(a.getX());
                 b.setY(a.getY());
