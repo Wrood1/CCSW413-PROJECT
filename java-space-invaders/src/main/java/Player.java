@@ -50,7 +50,7 @@ public class Player extends Sprite implements Commons {
 		commandInvoker.stopCommand(key);
 	}
 
-	private void fire() {
+	public void fire() {
 		Shot shot = shotPrototype.clone();
 		shot.setX(this.x + width / 2);
 		shot.setY(this.y);
